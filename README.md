@@ -1,54 +1,55 @@
 # Neurassembly
 
-An AI-powered assembly code optimization system that learns to optimize assembly code sequences through machine learning techniques.
+An AI-powered binary analysis and optimization system that enhances disassembled code analysis through machine learning techniques.
 
 ## Overview
 
-Neurassembly is designed to enhance assembly code optimization beyond traditional compiler capabilities. By leveraging machine learning, it aims to discover novel optimization patterns and improve code performance.
+Neurassembly is designed to analyze and optimize disassembled binary code. By leveraging machine learning, it aims to improve the efficiency of reverse-engineered code while maintaining its original functionality, particularly useful in malware analysis and security research.
 
 ## Features
 
-- Machine learning-based assembly code optimization
-- Training on unoptimized/optimized assembly code pairs
-- Pattern recognition for common performance optimizations
-- Comparative analysis against traditional compiler optimizations
+- Machine learning-based disassembled code optimization
+- Integration with popular disassemblers
+- Pattern recognition for common code obfuscation techniques
+- Performance optimization of disassembled code
+- Automated binary analysis and optimization
 
 ## Project Structure
 
 - `/src`: Core source code
-	- `/api`: API interfaces
-	- `/data`: Data collection and processing
-	- `/evaluation`: Performance metrics and evaluation
+	- `/api`: Disassembler integration interfaces
+	- `/data`: Binary analysis and processing
+	- `/evaluation`: Performance metrics and validation
 	- `/model`: ML models and optimization logic
 
 ## Goals
 
-- Develop an AI system capable of learning optimization patterns
-- Improve upon traditional compiler optimization techniques
-- Identify and implement novel assembly code optimizations
-- Provide benchmarks comparing AI-driven vs traditional optimizations
+- Develop an AI system for analyzing disassembled code patterns
+- Improve efficiency of reverse-engineered code
+- Identify and optimize obfuscated code patterns
+- Provide automated optimization of disassembled binaries
 
 ## Use Cases
 
-### Performance-Critical Systems
-- **High-Frequency Trading**: Optimize assembly code for trading systems where nanoseconds matter in transaction execution
-- **Real-time Systems**: Enhance performance of embedded systems in automotive, aerospace, and industrial control applications
-- **Game Engines**: Optimize critical paths in game engine code for better frame rates and physics calculations
+### Malware Analysis
+- **Automated Deobfuscation**: Identify and simplify obfuscated code patterns
+- **Performance Analysis**: Analyze efficiency of suspicious code execution
+- **Behavior Recognition**: Identify malicious code patterns through optimization attempts
 
-### Resource-Constrained Environments
-- **IoT Devices**: Optimize code for devices with limited processing power and memory
-- **Mobile Applications**: Improve battery life and performance through better code optimization
-- **Embedded Systems**: Maximize efficiency in systems with strict hardware limitations
+### Binary Analysis
+- **Legacy Software Analysis**: Optimize and understand legacy binary code
+- **Closed-Source Software**: Improve performance of disassembled proprietary software
+- **Firmware Analysis**: Analyze and optimize embedded system firmware
 
-### Legacy System Optimization
-- **Mainframe Systems**: Optimize legacy assembly code in banking and insurance systems
-- **Industrial Control Systems**: Enhance performance of older manufacturing and process control systems
-- **Telecommunications**: Improve efficiency of established infrastructure code
+### Security Research
+- **Vulnerability Analysis**: Identify potential vulnerabilities in disassembled code
+- **Exploit Development**: Optimize proof-of-concept exploit code
+- **Binary Hardening**: Improve security through code optimization
 
-### Cost Optimization
-- **Cloud Computing**: Reduce CPU time and costs in cloud environments through better code optimization
-- **Data Centers**: Improve energy efficiency through optimized code execution
-- **Large-Scale Systems**: Reduce hardware requirements through more efficient code execution
+### Reverse Engineering
+- **Game Modding**: Optimize disassembled game code for modifications
+- **Protocol Analysis**: Reverse engineer and optimize network protocols
+- **Software Interoperability**: Improve interaction with closed-source systems
 
 ## Status
 
