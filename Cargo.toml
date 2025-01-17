@@ -4,32 +4,31 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-# Core ML dependencies
-tch = "0.13"        # PyTorch bindings
-llvm-sys = "160"    # LLVM bindings
-cranelift = "0.100" # Code generation
-iced-x86 = "1.20"   # Assembly handling
+# Assembly handling
+iced-x86 = "1.20"
+
+# Machine Learning
+tch = "0.13"
 
 # Async runtime and web framework
 tokio = { version = "1.35", features = ["full"] }
 axum = "0.7"
 
-# Database
-sqlx = { version = "0.7", features = ["runtime-tokio-native-tls", "postgres"] }
-
 # Utilities
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-rayon = "1.8"       # Parallel processing
-tracing = "0.1"     # Logging
+rayon = "1.8"
+tracing = "0.1"
 tracing-subscriber = "0.3"
-num_cpus = "1.16"   # CPU core count detection
+num_cpus = "1.16"
 
 [dev-dependencies]
-criterion = "0.5"   # Benchmarking
-tokio-test = "0.4"  # Async testing
-tempfile = "3.8"    # Temporary files for testing
+criterion = "0.5"
+tokio-test = "0.4"
+tempfile = "3.8"
 
 [[bench]]
 name = "optimization_benchmarks"
-harness = false 
+harness = false
+
+

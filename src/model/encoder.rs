@@ -1,14 +1,14 @@
-use iced_x86::{Decoder, DecoderOptions, Instruction, Code, Register, MemorySize, OpKind};
-use serde::{Serialize, Deserialize};
+use iced_x86::{Decoder, DecoderOptions, Instruction, Register, MemorySize, OpKind};
 use std::collections::HashMap;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct AssemblyToken {
     pub token_type: TokenType,
     pub value: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq)]
+
 pub enum TokenType {
     Mnemonic,
     Register,
@@ -47,7 +47,7 @@ impl AssemblyEncoder {
             // Add mnemonic
             tokens.push(AssemblyToken {
                 token_type: TokenType::Mnemonic,
-                value: instruction.mnemonic().to_string(),
+                value: format!("{:?}", instruction.mnemonic()),
             });
 
             // Process operands
@@ -63,7 +63,7 @@ impl AssemblyEncoder {
                     OpKind::Register => {
                         tokens.push(AssemblyToken {
                             token_type: TokenType::Register,
-                            value: instruction.op_register(i).to_string(),
+                            value: format!("{:?}", instruction.op_register(i)),
                         });
                     }
                     OpKind::Memory => {
@@ -83,10 +83,10 @@ impl AssemblyEncoder {
         tokens
     }
 
-    fn encode_memory_operand(&self, instruction: &Instruction, operand_index: u32, tokens: &mut Vec<AssemblyToken>) {
+    fn encode_memory_operand(&self, instruction: &Instruction, _operand_index: u32, tokens: &mut Vec<AssemblyToken>) {
         // Handle memory access size prefix
         let size = instruction.memory_size();
-        if size != MemorySize::UNKNOWN {
+        if size != MemorySize::Unknown {
             tokens.push(AssemblyToken {
                 token_type: TokenType::Prefix,
                 value: format!("{:?}", size).to_lowercase(),
@@ -102,7 +102,7 @@ impl AssemblyEncoder {
         if instruction.memory_base() != Register::None {
             tokens.push(AssemblyToken {
                 token_type: TokenType::Register,
-                value: instruction.memory_base().to_string(),
+                value: format!("{:?}", instruction.memory_base()),
             });
         }
 
@@ -116,24 +116,26 @@ impl AssemblyEncoder {
             }
             tokens.push(AssemblyToken {
                 token_type: TokenType::Register,
-                value: instruction.memory_index().to_string(),
+                value: format!("{:?}", instruction.memory_index()),
             });
 
             // Scale
-            if instruction.memory_scale() > 1 {
+            let scale = instruction.memory_index_scale();
+            if scale > 1 {
                 tokens.push(AssemblyToken {
                     token_type: TokenType::Separator,
                     value: "*".to_string(),
                 });
                 tokens.push(AssemblyToken {
                     token_type: TokenType::Immediate,
-                    value: instruction.memory_scale().to_string(),
+                    value: scale.to_string(),
                 });
             }
         }
 
         // Displacement
-        if instruction.memory_displacement() != 0 {
+        let displacement = instruction.memory_displacement32();
+        if displacement != 0 {
             if instruction.memory_base() != Register::None || instruction.memory_index() != Register::None {
                 tokens.push(AssemblyToken {
                     token_type: TokenType::Separator,
@@ -142,7 +144,7 @@ impl AssemblyEncoder {
             }
             tokens.push(AssemblyToken {
                 token_type: TokenType::Immediate,
-                value: format!("{:#x}", instruction.memory_displacement()),
+                value: format!("{:#x}", displacement),
             });
         }
 

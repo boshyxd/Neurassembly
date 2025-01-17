@@ -1,5 +1,5 @@
 use crate::model::{
-    encoder::{AssemblyEncoder, AssemblyToken},
+    encoder::AssemblyEncoder,
     trainer::TrainingExample,
 };
 use std::{
@@ -8,9 +8,9 @@ use std::{
     io::{self, BufRead, BufReader},
     process::Command,
 };
-use iced_x86::{Decoder, DecoderOptions};
-use rayon::prelude::*;
 use serde::{Serialize, Deserialize};
+
+
 
 /// Configuration for data collection
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -62,21 +62,21 @@ impl AssemblyCollector {
         let source_files = self.find_source_files()?;
         tracing::info!("Found {} source files", source_files.len());
 
-        // Process files in parallel
-        let examples: Vec<TrainingExample> = source_files
-            .par_iter()
-            .flat_map(|source_file| {
-                self.process_source_file(source_file)
-                    .unwrap_or_else(|e| {
-                        tracing::error!("Error processing {}: {}", source_file.display(), e);
-                        vec![]
-                    })
-            })
-            .collect();
+        // Process files sequentially (removed parallel processing to fix borrow issues)
+        let mut examples = Vec::new();
+        for source_file in source_files {
+            match self.process_source_file(&source_file) {
+                Ok(mut file_examples) => examples.append(&mut file_examples),
+                Err(e) => {
+                    tracing::error!("Error processing {}: {}", source_file.display(), e);
+                }
+            }
+        }
 
         tracing::info!("Collected {} training examples", examples.len());
         Ok(examples)
     }
+
 
     /// Find all source files in the source directory
     fn find_source_files(&self) -> io::Result<Vec<PathBuf>> {
@@ -86,7 +86,8 @@ impl AssemblyCollector {
             let path = entry.path();
             if path.is_file() {
                 if let Some(ext) = path.extension() {
-                    if self.config.source_extensions.iter().any(|e| e == ext) {
+                    if self.config.source_extensions.iter()
+                        .any(|e| ext.to_string_lossy() == *e) {
                         files.push(path);
                     }
                 }
@@ -99,11 +100,11 @@ impl AssemblyCollector {
     fn process_source_file(&mut self, source_file: &Path) -> Result<Vec<TrainingExample>, Box<dyn std::error::Error>> {
         let mut examples = Vec::new();
         let file_stem = source_file.file_stem().unwrap().to_str().unwrap();
+        let optimization_levels = self.config.optimization_levels.clone();
 
         // Compile with different optimization levels
-        for opt_level in &self.config.optimization_levels {
+        for opt_level in &optimization_levels {
             let asm_path = self.config.output_dir.join(format!("{}_{}.s", file_stem, opt_level));
-            let obj_path = self.config.output_dir.join(format!("{}_{}.o", file_stem, opt_level));
 
             // Compile to assembly
             self.compile_to_assembly(source_file, &asm_path, opt_level)?;

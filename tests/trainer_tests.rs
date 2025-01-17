@@ -59,7 +59,6 @@ fn test_training_loop() -> Result<(), Box<dyn std::error::Error>> {
         num_epochs: 2, // Reduce epochs for testing
         batch_size: 2,
         save_dir: temp_dir.path().to_path_buf(),
-        device: Device::Cpu,
         ..Default::default()
     };
     
@@ -91,7 +90,7 @@ fn test_checkpoint_save_load() -> Result<(), Box<dyn std::error::Error>> {
     let mut trainer = ModelTrainer::new(model, training_config.clone());
     
     // Save a checkpoint
-    trainer.save_checkpoint(1, "test_checkpoint.pt")?;
+    trainer.save_checkpoint("test_checkpoint.pt")?;
     
     // Create a new trainer and load the checkpoint
     let model = OptimizationModel::new(model_config);

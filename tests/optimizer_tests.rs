@@ -1,5 +1,5 @@
 use neurassembly::model::{
-    encoder::{AssemblyEncoder, AssemblyToken},
+    encoder::AssemblyEncoder,
     optimizer::{OptimizationModel, OptimizationConfig},
 };
 
@@ -23,7 +23,7 @@ fn test_model_forward_pass() {
     let model = OptimizationModel::new(config);
 
     let output = model.forward(&tokens);
-    assert_eq!(output.size(), &[1, tokens.len() as i64, config.vocab_size]);
+    assert_eq!(output.dims(), &[1, tokens.len() as i64, config.vocab_size]);
 }
 
 #[test]
@@ -44,7 +44,6 @@ fn test_model_optimization() {
 
 #[test]
 fn test_model_save_load() -> Result<(), Box<dyn std::error::Error>> {
-    use std::fs;
     use tempfile::tempdir;
 
     let config = OptimizationConfig::default();

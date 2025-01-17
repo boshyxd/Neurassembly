@@ -6,7 +6,7 @@ use tempfile::tempdir;
 
 #[test]
 fn test_metrics_calculation() {
-    let encoder = AssemblyEncoder::new();
+    let mut encoder = AssemblyEncoder::new();
     let evaluator = PerformanceEvaluator::new(MetricsConfig::default());
 
     // Simple assembly sequence
@@ -44,7 +44,7 @@ fn test_metrics_comparison() {
 
 #[test]
 fn test_memory_operations_counting() {
-    let encoder = AssemblyEncoder::new();
+    let mut encoder = AssemblyEncoder::new();
     let evaluator = PerformanceEvaluator::new(MetricsConfig::default());
 
     let assembly = "mov rax, [rbx]\npush rax\npop rcx\nmov [rdx], rax";
@@ -58,7 +58,7 @@ fn test_memory_operations_counting() {
 
 #[test]
 fn test_register_pressure() {
-    let encoder = AssemblyEncoder::new();
+    let mut encoder = AssemblyEncoder::new();
     let evaluator = PerformanceEvaluator::new(MetricsConfig::default());
 
     let assembly = "mov rax, rbx\nmov rcx, rdx\nadd rax, rcx";

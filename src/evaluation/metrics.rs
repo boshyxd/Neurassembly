@@ -3,7 +3,6 @@ use std::{
     collections::HashMap,
     time::Duration,
     process::{Command, Stdio},
-    io::Write,
 };
 use serde::{Serialize, Deserialize};
 
@@ -136,7 +135,7 @@ impl PerformanceEvaluator {
         // Create temporary files
         std::fs::create_dir_all(&self.config.temp_dir)?;
         let asm_file = self.config.temp_dir.join("test.s");
-        let obj_file = self.config.temp_dir.join("test.o");
+        let _obj_file = self.config.temp_dir.join("test.o");
         let exe_file = self.config.temp_dir.join("test");
 
         // Write assembly to file
@@ -168,30 +167,30 @@ impl PerformanceEvaluator {
 
         MetricsComparison {
             instruction_reduction: percentage_change(
-                original_metrics.instruction_count,
-                optimized_metrics.instruction_count,
+                original_metrics.instruction_count as u64,
+                optimized_metrics.instruction_count as u64,
             ),
             cycle_reduction: percentage_change(
                 original_metrics.estimated_cycles,
                 optimized_metrics.estimated_cycles,
             ),
             memory_ops_reduction: percentage_change(
-                original_metrics.memory_ops,
-                optimized_metrics.memory_ops,
+                original_metrics.memory_ops as u64,
+                optimized_metrics.memory_ops as u64,
             ),
             register_pressure_change: percentage_change(
-                original_metrics.register_pressure,
-                optimized_metrics.register_pressure,
+                original_metrics.register_pressure as u64,
+                optimized_metrics.register_pressure as u64,
             ),
             code_size_reduction: percentage_change(
-                original_metrics.code_size,
-                optimized_metrics.code_size,
+                original_metrics.code_size as u64,
+                optimized_metrics.code_size as u64,
             ),
             execution_time_reduction: match (original_metrics.execution_time, optimized_metrics.execution_time) {
                 (Some(original), Some(optimized)) => {
                     Some(percentage_change(
-                        original.as_nanos() as usize,
-                        optimized.as_nanos() as usize,
+                        original.as_nanos() as u64,
+                        optimized.as_nanos() as u64,
                     ))
                 }
                 _ => None,
@@ -218,7 +217,7 @@ pub struct MetricsComparison {
 }
 
 /// Calculate percentage change between two values
-fn percentage_change(original: usize, new: usize) -> f64 {
+fn percentage_change(original: u64, new: u64) -> f64 {
     if original == 0 {
         return 0.0;
     }

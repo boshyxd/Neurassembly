@@ -1,6 +1,8 @@
 use neurassembly::api;
 use std::net::SocketAddr;
 use tracing_subscriber;
+use axum::serve;
+use tokio::net::TcpListener;
 
 #[tokio::main]
 async fn main() {
@@ -15,8 +17,8 @@ async fn main() {
     tracing::info!("Starting server on {}", addr);
 
     // Start the server
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
+    let listener = TcpListener::bind(addr).await.unwrap();
+    serve(listener, app.into_make_service())
         .await
         .unwrap();
-} 
+}
