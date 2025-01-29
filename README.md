@@ -29,28 +29,6 @@ Neurassembly is designed to analyze and optimize disassembled binary code. By le
 - Identify and optimize obfuscated code patterns
 - Provide automated optimization of disassembled binaries
 
-## Use Cases
-
-### Malware Analysis
-- **Automated Deobfuscation**: Identify and simplify obfuscated code patterns
-- **Performance Analysis**: Analyze efficiency of suspicious code execution
-- **Behavior Recognition**: Identify malicious code patterns through optimization attempts
-
-### Binary Analysis
-- **Legacy Software Analysis**: Optimize and understand legacy binary code
-- **Closed-Source Software**: Improve performance of disassembled proprietary software
-- **Firmware Analysis**: Analyze and optimize embedded system firmware
-
-### Security Research
-- **Vulnerability Analysis**: Identify potential vulnerabilities in disassembled code
-- **Exploit Development**: Optimize proof-of-concept exploit code
-- **Binary Hardening**: Improve security through code optimization
-
-### Reverse Engineering
-- **Game Modding**: Optimize disassembled game code for modifications
-- **Protocol Analysis**: Reverse engineer and optimize network protocols
-- **Software Interoperability**: Improve interaction with closed-source systems
-
 ## Status
 
 Project is under active development.
